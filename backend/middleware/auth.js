@@ -1,13 +1,11 @@
-// ---larify the admin or normal user---
-
-
+// ---clarify the admin or normal user---
 const jwt = require('jsonwebtoken');
 const secret_key = "my_jwt_secret_key";
 
 //clarify the middleware of jwt
 function authenticateToken(req,res,next){
     const authHeader = req.headers['authorization'];
-    const token = authHeader &&authHeader.split('  ')[1];
+    const token = authHeader && authHeader.split(' ')[1];
 
     if(!token){
         return res.status(401).json({message:"no token"});

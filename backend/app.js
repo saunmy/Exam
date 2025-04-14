@@ -1,61 +1,35 @@
-//Express application entrance 
+// app.js - Express 应用入口
 const express = require('express');
 const cors = require('cors');
-const{Sequelize} = require('sequelize');
- 
 
-//define express instance
-const app=express();
-app.use(cors());              //allow frontend Cross-origin requests
-app.use(express.json())       //resolve json request
+const app = express();
+app.use(cors());            // 启用CORS，允许前端跨域请求
+app.use(express.json());    // 解析JSON请求体
 
+// 使用集中导出的模型和sequelize实例
+const { sequelize, User, Projects, Tools, BorrowRecords } = require('./models');
 
-// connect the database
-const sequelize = new Sequelize('mywebsite','root','123456',{
-    host:'localhost',
-    dialect:'mysql'
-
-});
-
-
-//initialize the models
-const User = require('./models/User')(sequelize);
-const Projects = require('./models/Projects')(sequelize);
-const Tools = require('./models/Tools')(sequelize);
-const BorrowRecords = require('./models/BorrowRecords')(sequelize);
-
-
-//establish the relationship between models
-User.hasMany(BorrowRecords,{foreignKey:'user_id'});
-Tools.hasMany(BorrowRecords,{foreignKey:'tool_id'});
-Projects.hasMany(BorrowRecords,{foreignKey:'project_id'});
-BorrowRecords.belongsTo(User,{foreignKey:'user_id'});
-BorrowRecords.belongsTo(Tools,{foreignKey:'tool_id'});
-BorrowRecords.belongsTo(Projects,{foreignKey:'project_id'});
-
-
-
-//test database connection
+// 测试数据库连接
 sequelize.authenticate()
-.then(()=>console.log("connect sucessfully"))
-.catch(err=>console.error("connect failed"));
+  .then(() => console.log("connect successfully"))
+  .catch(err => console.error("connect failed", err));
 
+// 挂载路由
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/tools', require('./routes/tools'));
+app.use('/api/records', require('./routes/records'));
+app.use('/api/projects', require('./routes/projects'));
+app.use('/api/approvals', require('./routes/approval'));
+app.use('/api/test', require('./routes/test'));
 
-
-
-//mount  the router
-app.use('/api/auth',require('./routes/auth'));
-
-
-
-//default router(for testing)
-app.get('/',(res,req)=>{
-    res.setEncoding('server id running');
+// 默认测试路由
+app.get('/', (req, res) => {
+  res.send('Server is running');
 });
 
-
-//boot the server
-const port=5000;
-app.listen(port,()=>{
-    console.log('server is listening on port ${PORT}');
+// 启动服务器
+const PORT = 5000;
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
