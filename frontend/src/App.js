@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
-import { Routes, Route, BrowserRouter, Navigate, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, HashRouter, Navigate, Link, useNavigate } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
 import ToolsPage from './components/ToolsPage';
 import TrackingPage from './components/TrackingPage';
@@ -118,8 +118,8 @@ function App() {
 // 用BrowserRouter封装App
 export default function AppWithRouter() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <App />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
