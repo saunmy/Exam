@@ -1,4 +1,3 @@
-import {useAppSelector} from "../hooks";
 import React from "react";
 import {useState} from "react";
 import {View, Text, TextInput, Button, TouchableOpacity, StyleSheet} from "react-native";
@@ -22,9 +21,11 @@ export default function AddHabit() {
             try {
                 dispatch(addHabit({text:text.trim(),icon:icon.trim()}));
                 console.log('Habit added successfully');
+                Alert.alert('Success', 'Habit added successfully'); 
                 setText('');
             } catch (error) {
                 console.error('Error adding habit:', error);
+                Alert.alert('Error', 'An error occurred while adding the habit');
             }
         } else {
             console.log('Empty habit text - not submitting');
