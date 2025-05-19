@@ -39,7 +39,7 @@ export default function HabitList() {
       <View style={{ padding: 16 }}>
         <Text style={{fontSize: 35, fontWeight: "bold", marginVertical: 20}}>Today's Habits</Text>
         <FlatList
-          data={habits}
+          data={habits.habits}
           keyExtractor={(item, index) => index.toString()}
           renderItem={renderItem}
           contentContainerStyle={{ paddingBottom: 100 }}
