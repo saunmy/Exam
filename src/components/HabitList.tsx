@@ -1,4 +1,7 @@
 import React from 'react';
+import { useCallback } from 'react';
+import debounce from 'debounce';
+
 import { View, Text, FlatList, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { toogleHabit, movetobottom, movetotop ,deleteHabit} from '../store/addSlice';
@@ -8,6 +11,13 @@ import { toggleWithDelay } from '../store/addThunks';
 export default function HabitList() {
   const habits = useAppSelector(state => state.habits);
   const dispatch = useAppDispatch();
+  
+  const debouncedToggle = useCallback(
+    debounce((id: number) => {
+      dispatch(toggleWithDelay(id));
+    }, 1000),
+    [dispatch]
+  );
 
 
   const renderItem = ({ item }: { item: { id: number; icon: string; text: string; completed: boolean } }) => (
@@ -20,9 +30,8 @@ export default function HabitList() {
         borderRadius: 8,
         alignItems: 'center'
       }} 
-      onPress={() => {
-        dispatch(toggleWithDelay(item.id));
-      }}
+      onPress={() => debouncedToggle(item.id)} // ✅ 直接调用 debounced 函数，不用 dispatch 外层了
+
     >
       <Text style={{ fontSize: 24, marginRight: 8 }}>{item.icon}</Text>
       <Text style={{ fontSize: 24, flex: 1 }}>{item.text}</Text>
