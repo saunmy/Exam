@@ -6,11 +6,18 @@ import { View, Text, FlatList, TouchableOpacity, SafeAreaView } from 'react-nati
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { deleteHabit} from '../store/addSlice';
 import { toggleWithDelay } from '../store/addThunks';
+import { loadHabitsFromStorage } from '../store/habitStorage';
+
+
 
 
 export default function HabitList() {
   const habits = useAppSelector(state => state.habits);
   const dispatch = useAppDispatch();
+  
+  useEffect(() => {
+    dispatch(loadHabitsFromStorage());
+  }, []);
   
   const debouncedToggle = useCallback(
     debounce((id: number) => {

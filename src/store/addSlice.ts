@@ -55,9 +55,13 @@ export const addSlice = createSlice({
             if(habit){
                 state.habits.splice(state.habits.indexOf(habit),1);
             }
+        },
+        setHabits: (state, action: PayloadAction<Habit[]>) => {
+            state.habits = action.payload;
         }
+          
     }
     
 })
-export const {addHabit,toogleHabit,movetobottom,movetotop,deleteHabit} = addSlice.actions;
+export const {setHabits,addHabit,toogleHabit,movetobottom,movetotop,deleteHabit} = addSlice.actions;
 export default addSlice.reducer;

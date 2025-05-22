@@ -4,6 +4,9 @@ import {View, Text, TextInput, Button, TouchableOpacity, StyleSheet} from "react
 import {useAppDispatch} from "../hooks";
 import {addHabit} from "../store/addSlice";
 import { Alert } from 'react-native';
+import { loadHabitsFromStorage } from "../store/habitStorage";
+import { useEffect } from "react";
+import { saveHabitsToStorage } from "../store/habitStorage";
 
 const iconoptions=['📖','💪','🎵','☕️','🎮','🛏️']
 
@@ -20,6 +23,7 @@ export default function AddHabit() {
             console.log('Dispatching new habit:', {text: text.trim(), icon,createTime:createTime.toISOString()});
             try {
                 dispatch(addHabit({text:text.trim(),icon:icon.trim()}));
+                dispatch(saveHabitsToStorage());
                 console.log('Habit added successfully');
                 Alert.alert('Success', 'Habit added successfully'); 
                 setText('');
